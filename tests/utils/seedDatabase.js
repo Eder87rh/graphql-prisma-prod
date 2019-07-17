@@ -12,6 +12,24 @@ export const userOne = {
   jwt: undefined
 }
 
+export const postOne = {
+  input: {
+    title: "Post 1",
+    body: "...",
+    published: true,
+  },
+  post: undefined
+};
+
+export const postTwo = {
+  input: {
+    title: "Post 2",
+    body: "...",
+    published: false,
+  },
+  post: undefined
+};
+
 
 export default async () => {
   // Delete test data
@@ -24,11 +42,10 @@ export default async () => {
   });
   userOne.jwt = jwt.sign({ userId: userOne.user.id }, 'thisisasecret');
 
-  await prisma.mutation.createPost({
+  // Create post one
+  postOne.post = await prisma.mutation.createPost({
     data: {
-      title: "Post 1",
-      body: "...",
-      published: true,
+      ...postOne.input,
       author: {
         connect: {
           id: userOne.user.id
@@ -37,11 +54,10 @@ export default async () => {
     }
   });
 
-  await prisma.mutation.createPost({
+  // Create post two
+  postTwo.post = await prisma.mutation.createPost({
     data: {
-      title: "Post 2",
-      body: "...",
-      published: false,
+      ...postTwo.input,
       author: {
         connect: {
           id: userOne.user.id
